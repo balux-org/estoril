@@ -1,6 +1,6 @@
 package sine.lite.dies
 
-import com.typesafe.scalalogging.slf4j.LazyLogging
+import com.typesafe.scalalogging.LazyLogging
 
 import scala.sys.process._
 import java.io._

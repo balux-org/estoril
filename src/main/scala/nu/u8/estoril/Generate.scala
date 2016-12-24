@@ -4,7 +4,7 @@ Copyright (C) 2014 sumito3478 <sumito3478@gmail.com>
 
 package sine.lite.dies
 
-import com.typesafe.scalalogging.slf4j.LazyLogging
+import com.typesafe.scalalogging.LazyLogging
 import java.nio.file._
 import java.nio.file.attribute._
 import java.io._

@@ -4,7 +4,7 @@ Copyright (C) 2014 sumito3478 <sumito3478@gmail.com>
 
 package sine.lite.dies
 
-import com.typesafe.scalalogging.slf4j.LazyLogging
+import com.typesafe.scalalogging.LazyLogging
 import org.fusesource.scalate.{ RenderContext, TemplateEngine, TemplateEngineAddOn }
 import org.fusesource.scalate.filter.Filter
 import scala.sys.process._
