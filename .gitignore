@@ -28,3 +28,6 @@ hs_err_pid*.log
 
 # node locally installed modules
 /node_modules
+
+# macOS
+.DS_Store
