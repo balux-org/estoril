@@ -4,6 +4,7 @@
 /project/project/target
 /*/target
 /*/project/*
+!/project/project/plugins.sbt
 
 # eclipse
 /.project
