@@ -23,9 +23,6 @@ hs_err_pid*.log
 # generated static site
 /static-site
 
-# Temporary Directory
-/tmp
-
 # node locally installed modules
 /node_modules
 
