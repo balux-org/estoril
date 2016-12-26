@@ -21,7 +21,7 @@ import java.time.{ ZonedDateTime, LocalDate, ZoneId }
 import com.typesafe.scalalogging.LazyLogging
 import org.apache.commons.codec.binary.Base32
 import org.eclipse.jgit.lib.ObjectId
-import org.fusesource.scalate._
+import org.fusesource.scalate.{ layout => _, _ }
 import java.nio.file._
 import org.fusesource.scalate.scaml.ScamlOptions
 import org.yaml.snakeyaml.Yaml
@@ -32,13 +32,15 @@ import scala.collection.JavaConverters._
 import Git.ObjectIdOps
 
 object Articles {
-  val engine = new TemplateEngine
-  engine.workingDirectory = new File("tmp")
-  engine.allowReload = true
-  engine.allowCaching = true
-  ScamlOptions.format = ScamlOptions.Format.html5
-  ScamlOptions.indent = ""
-  val layout = engine.load("layout.jade")
+  val (layout, feed) = {
+    val engine = new TemplateEngine
+    engine.workingDirectory = new File("tmp")
+    engine.allowReload = true
+    engine.allowCaching = true
+    ScamlOptions.format = ScamlOptions.Format.html5
+    ScamlOptions.indent = ""
+    (Resource.layout(engine), Resource.feed(engine))
+  }
 }
 
 import Articles._
@@ -57,8 +59,7 @@ class Articles extends LazyLogging {
       val updatedAt = articles.map(_.updatedAt).maxBy(x => x.toInstant.toEpochMilli)
       val createdAt = articles.map(_.createdAt).maxBy(x => x.toInstant.toEpochMilli)
       val contents = articles.map(_.content)
-      engine.layout(
-        "layout.jade",
+      layout(
         Map(
           "title" -> s"タグ $name",
           "contents" -> contents,
@@ -82,8 +83,7 @@ class Articles extends LazyLogging {
       val updatedAt = articles.map(_.updatedAt).maxBy(x => x.toInstant.toEpochMilli)
       val createdAt = articles.map(_.createdAt).maxBy(x => x.toInstant.toEpochMilli)
       val contents = articles.sortBy(x => x.updatedAt.toInstant.toEpochMilli)(implicitly[Ordering[Long]].reverse).map(_.content)
-      engine.layout(
-        "layout.jade",
+      layout(
         Map(
           "title" -> s"全ての記事",
           "contents" -> contents,
@@ -103,8 +103,7 @@ class Articles extends LazyLogging {
       val root = path.getParent.relativize(Paths.get("."))
       val updatedAt = articles.map(_.updatedAt).maxBy(x => x.toInstant.toEpochMilli)
       val createdAt = articles.map(_.createdAt).maxBy(x => x.toInstant.toEpochMilli)
-      engine.layout(
-        "feed.jade",
+      feed(
         Map(
           "title" -> s"Sine Lite Dies",
           "contents" -> articles.map(_.content).sortBy(_.updatedAt.toInstant.toEpochMilli)(implicitly[Ordering[Long]].reverse),
@@ -127,8 +126,7 @@ class Articles extends LazyLogging {
       val createdAt = articles.map(_.createdAt).maxBy(x => x.toInstant.toEpochMilli)
       val as = articles.sortBy(_.updatedAt.toInstant.toEpochMilli)(implicitly[Ordering[Long]].reverse)
       val indexMarkdown = as.map(x => s"- [${x.content.title}](${x.path.toString.replaceFirst(".md$", ".html")})").mkString("", "\n", "\n")
-      engine.layout(
-        "layout.jade",
+      layout(
         Map(
           "title" -> s"INDEX",
           "contents" -> Seq(Content(body = indexMarkdown, metaData = Map(), tags = List(), title = "記事一覧", permalink = path.toString, updatedAt = updatedAt, createdAt = createdAt, urn = Atom.stringToURN("sine.lite.dies.index"))),
@@ -152,8 +150,7 @@ class Articles extends LazyLogging {
       val indexMarkdown = allTags.map(tag => s"- [$tag](tag/$tag.html)").mkString("", "\n", "\n")
       val updatedAt = articles.map(_.updatedAt).maxBy(x => x.toInstant.toEpochMilli)
       val createdAt = articles.map(_.createdAt).maxBy(x => x.toInstant.toEpochMilli)
-      engine.layout(
-        "layout.jade",
+      layout(
         Map(
           "title" -> s"TAGS",
           "contents" -> Seq(Content(body = indexMarkdown, metaData = Map(), tags = List(), title = "タグ一覧", permalink = path.toString, updatedAt = updatedAt, createdAt = createdAt, urn = Atom.stringToURN("sine.lite.dies.tags"))),
@@ -278,8 +275,7 @@ class Articles extends LazyLogging {
       val css = path.getParent.relativize(Paths.get("style.css"))
       logger.info(s"allTags = $allTags")
       val root = path.getParent.relativize(Paths.get("."))
-      engine.layout(
-        "layout.jade",
+      layout(
         Map(
           "title" -> title,
           "contents" -> Seq(content),
