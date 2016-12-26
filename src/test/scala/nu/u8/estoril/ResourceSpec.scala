@@ -15,19 +15,35 @@
  */
 package nu.u8.estoril
 
+import java.io.File
+
+import org.fusesource.scalate.TemplateEngine
+import org.fusesource.scalate.scaml.ScamlOptions
+
 class ResourceSpec extends Spec {
   feature("Get resources from classpath") {
-    scenario("Get layout.jade") {
-      assert(Resource.layout.nonEmpty)
-    }
-    scenario("Get feed.jade") {
-      assert(Resource.feed.nonEmpty)
-    }
     scenario("Get style.styl") {
       assert(Resource.style.nonEmpty)
     }
     scenario("Get rust.styl") {
       assert(Resource.rust.nonEmpty)
+    }
+  }
+  feature("Load Jade to Scalate template engine from classPath") {
+    def testEngine = {
+      val engine = new TemplateEngine
+      engine.workingDirectory = new File("tmp")
+      engine.allowReload = false
+      engine.allowCaching = false
+      ScamlOptions.format = ScamlOptions.Format.html5
+      ScamlOptions.indent = ""
+      engine
+    }
+    scenario("load layout.jade") {
+      Resource.layout(testEngine)
+    }
+    scenario("load feed.jade") {
+      Resource.layout(testEngine)
     }
   }
 }

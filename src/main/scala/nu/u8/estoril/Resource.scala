@@ -15,14 +15,20 @@
  */
 package nu.u8.estoril
 
-import java.nio.file.{ Files, Paths }
+import java.net.URI
+import java.nio.file.{ Files, Path, Paths }
+
+import org.fusesource.scalate.{ Template, TemplateEngine }
 
 object Resource {
   private[this] def classLoader = getClass.getClassLoader
+  private[this] def nameToPath(name: String): Path = Paths.get(classLoader.getResource(s"nu/u8/estoril/$name").toURI)
   private[this] def load(name: String): String =
-    new String(Files.readAllBytes(Paths.get(classLoader.getResource(s"nu/u8/estoril/$name").toURI)))
-  lazy val layout = load("layout.jade")
-  lazy val feed = load("feed.jade")
+    new String(Files.readAllBytes(nameToPath(name)))
+  private[this] def loadJade(name: String)(templateEngine: TemplateEngine): Template =
+    templateEngine.load(nameToPath(name).toFile)
+  val layout: TemplateEngine => Template = loadJade("layout.jade")
+  val feed: TemplateEngine => Template = loadJade("feed.jade")
   lazy val rust = load("rust.styl")
   lazy val style = load("style.styl")
 }
