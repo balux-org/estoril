@@ -20,6 +20,10 @@ html(lang='ja')
     meta(name='dcterms.date' content='#{updatedAt.toLocalDate}')
     title Sine Lite Dies - #{title}
     link(type='application/atom+xml' rel='alternate' href='http://sld.sumito3478.info/article/all.xml')
+    link(rel='preload' href='#{root}/EBGaramond12-Regular.woff2' as='font')
+    link(rel='preload' href='#{root}/LogoTypeGothic.woff2' as='font')
+    link(rel='preload' href='#{root}/FiraCode-Retina.woff2' as='font')
+    link(rel='preload' href='#{root}/style.css' as='style')
     script(src='http://code.jquery.com/jquery-1.11.1.min.js')
     :!javascript
       sineLiteDies = {}
@@ -28,21 +32,6 @@ html(lang='ja')
       script(src='http://cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js')
       script(src='http://cdnjs.cloudflare.com/ajax/libs/css3pie/2.0beta1/PIE_IE678.js')
       script sineLiteDies.oldIE = true;
-    style
-      :!plain
-        @font-face {
-          font-family: "EB Garamond";
-          src: url("#{root}/EBGaramond12-Regular.woff2");
-        }
-        @font-face {
-          font-family: "LogoTypeGothic";
-          src: url("#{root}/LogoTypeGothic.woff2");
-        }
-        @font-face {
-          font-family: "Fira Code";
-          src: url("#{root}/FiraCode-Retina.woff2");
-        }
-    link(rel='stylesheet' href='#{root}/style.css')
     :!javascript
       $(document).ready(function() {
         // Fix Android Browser and IE8
@@ -132,4 +121,19 @@ html(lang='ja')
         |     })();
         | </script>
         | <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+      style
+        :!plain
+          @font-face {
+            font-family: "EB Garamond";
+            src: url("#{root}/EBGaramond12-Regular.woff2");
+          }
+          @font-face {
+            font-family: "LogoTypeGothic";
+            src: url("#{root}/LogoTypeGothic.woff2");
+          }
+          @font-face {
+            font-family: "Fira Code";
+            src: url("#{root}/FiraCode-Retina.woff2");
+          }
+      link(rel='stylesheet' href='#{root}/style.css')
 -# vim:set ts=2 sw=2 et:
