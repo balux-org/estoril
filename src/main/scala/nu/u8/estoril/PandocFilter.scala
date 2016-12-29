@@ -54,7 +54,7 @@ object PandocFilter extends Filter with TemplateEngineAddOn with LazyLogging {
     ret
   }
   def filter(context: RenderContext, content: String): String = pandocConvert(content)
-  def apply(te: TemplateEngine) = {
+  def apply(te: org.fusesource.scalate.TemplateEngine) = {
     if (!te.filters.contains("pandoc-markdown")) {
       logger.info("adding PandocFilter to template engine")
       logger.info(te.filters.toString)

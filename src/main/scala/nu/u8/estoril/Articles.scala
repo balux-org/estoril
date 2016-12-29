@@ -21,7 +21,7 @@ import java.time.{ ZonedDateTime, LocalDate, ZoneId }
 import com.typesafe.scalalogging.LazyLogging
 import org.apache.commons.codec.binary.Base32
 import org.eclipse.jgit.lib.ObjectId
-import org.fusesource.scalate.{ layout => _, _ }
+import org.fusesource.scalate.{ layout => _, TemplateEngine => _, _ }
 import java.nio.file._
 import org.fusesource.scalate.scaml.ScamlOptions
 import org.yaml.snakeyaml.Yaml
