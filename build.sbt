@@ -43,3 +43,6 @@ addCompilerPlugin("org.psywerx.hairyfotr" %% "linter" % "0.1.17")
 // Note that SBT cannot resolve a local Maven repository.
 // We need to access it via HTTP(S).
 publishTo := Some(Resolver.file("dist-maven", file("dist/maven")))
+
+mainClass in assembly := Some("nu.u8.estoril.Generate")
+
