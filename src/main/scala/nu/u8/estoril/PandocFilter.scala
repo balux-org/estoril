@@ -20,38 +20,42 @@ import org.fusesource.scalate.{ RenderContext, TemplateEngine, TemplateEngineAdd
 import org.fusesource.scalate.filter.Filter
 import scala.sys.process._
 import java.io._
+import scala.collection.mutable
 
 object PandocFilter extends Filter with TemplateEngineAddOn with LazyLogging {
+  val cache = new mutable.HashMap[String, String]()
   def pandocConvert(x: String) = {
-    // avoid misterious hangs...
-    // FIXME: fix hangs without retrying
-    def retry(i: Int): String = {
-      if (i > 10)
-        sys.error("Pandoc conversion timed out for 10 times")
-      val currentThread = Thread.currentThread
-      try {
-        val watcher = new Thread(new Runnable {
-          def run = {
-            try {
-              Thread.sleep(3000 + i * 700)
-              currentThread.interrupt
-            } catch {
-              case _: InterruptedException =>
+    cache.getOrElseUpdate(x, {
+      // avoid misterious hangs...
+      // FIXME: fix hangs without retrying
+      def retry(i: Int): String = {
+        if (i > 10)
+          sys.error("Pandoc conversion timed out for 10 times")
+        val currentThread = Thread.currentThread
+        try {
+          val watcher = new Thread(new Runnable {
+            def run = {
+              try {
+                Thread.sleep(3000 + i * 700)
+                currentThread.interrupt
+              } catch {
+                case _: InterruptedException =>
+              }
             }
-          }
-        })
-        watcher.start
-        val ret = (Seq("pandoc", "-f", "markdown", "-t", "html5", "--no-highlight") #< new ByteArrayInputStream(x.getBytes("UTF-8"))).!!
-        watcher.interrupt
-        ret
-      } catch {
-        case _: InterruptedException =>
-          logger.info("Pandoc conversion timed out! retrying...")
-          retry(i + 1)
+          })
+          watcher.start
+          val ret = (Seq("pandoc", "-f", "markdown", "-t", "html5", "--no-highlight") #< new ByteArrayInputStream(x.getBytes("UTF-8"))).!!
+          watcher.interrupt
+          ret
+        } catch {
+          case _: InterruptedException =>
+            logger.info("Pandoc conversion timed out! retrying...")
+            retry(i + 1)
+        }
       }
-    }
-    val ret = retry(0)
-    ret
+      val ret = retry(0)
+      ret
+    })
   }
   def filter(context: RenderContext, content: String): String = pandocConvert(content)
   def apply(te: org.fusesource.scalate.TemplateEngine) = {
