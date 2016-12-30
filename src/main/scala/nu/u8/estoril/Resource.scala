@@ -16,19 +16,32 @@
 package nu.u8.estoril
 
 import java.net.URI
-import java.nio.file.{ Files, Path, Paths }
+import java.nio.file._
 
 import org.fusesource.scalate.{ Template, TemplateEngine }
 
+import scala.collection.mutable
+import scala.collection.JavaConverters._
+
 object Resource {
   private[this] def classLoader = getClass.getClassLoader
-  private[this] def nameToPath(name: String): Path = Paths.get(classLoader.getResource(s"nu/u8/estoril/$name").toURI)
+  private[this] var cache = new mutable.HashMap[URI, FileSystem]()
+  def nameToPath(name: String): Path = {
+    val uri = classLoader.getResource(s"nu/u8/estoril/$name").toURI
+    if (uri.getScheme != "file")
+      try {
+        FileSystems.getFileSystem(uri)
+      } catch {
+        case _: FileSystemNotFoundException =>
+          FileSystems.newFileSystem(uri, mutable.Map("create" -> true).asJava)
+      }
+    Paths.get(uri)
+  }
   private[this] def load(name: String): String =
     new String(Files.readAllBytes(nameToPath(name)))
   type Layout = Map[String, Any] => String
   private[this] def loadJade(name: String)(templateEngine: TemplateEngine): Layout = {
-    val path = nameToPath(name)
-    val template = templateEngine.load(path.toFile)
+    val template = templateEngine.load(nameToPath(name).toUri.toString)
     attrs => templateEngine.layout(template.source.uri, template, attrs)
   }
   val layout: TemplateEngine => Layout = loadJade("layout.jade")
