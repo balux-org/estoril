@@ -19,7 +19,10 @@ import com.typesafe.scalalogging.LazyLogging
 import java.nio.file._
 import java.nio.file.attribute._
 import java.io._
+import java.nio.charset.StandardCharsets
+
 import scala.sys.process._
+import scala.collection.JavaConverters._
 
 object Generate extends App with LazyLogging {
   val articles = new Articles
@@ -40,8 +43,8 @@ object Generate extends App with LazyLogging {
   }
   val out = new FileOutputStream(new File("static-site/style.css"))
   logger.info(Seq("npm", "install", "nib").!!)
-  logger.info((Seq("stylus", "--include", "node_modules/nib/lib") #< new FileInputStream(new File("style.styl")) #> out).!!)
-  syncLastModifiedTime(Paths.get("style.styl"), target.resolve("style.css"))
+  logger.info((Seq("stylus", "--include", "node_modules/nib/lib") #< new ByteArrayInputStream(Resource.style.getBytes(StandardCharsets.UTF_8)) #> out).!!)
+  syncLastModifiedTime(Resource.nameToPath("style.styl"), target.resolve("style.css"))
   out.close
   try {
     for (article <- articles.articles) {
