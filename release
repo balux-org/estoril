@@ -12,4 +12,5 @@ git commit
 echo "Incrementing patch version for next development"
 version_sbt=$(cat version.sbt | perl -pe 's/(\d+)(?=")/$1+1/ge')
 echo $version_sbt > version.sbt
+git add version.sbt
 echo "version.sbt => $version_sbt"
