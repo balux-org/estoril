@@ -51,7 +51,7 @@ class Articles extends LazyLogging {
   lazy val tagMap = articles.map(_.tags).flatten.toSet.map { tag: String => tag -> articles.filter(_.tags.contains(tag)) }.toMap
   lazy val allTags = articles.map(_.tags).flatten.toSet.toList.sorted
   case class Tag(name: String) {
-    lazy val path = Paths.get("tag", s"$name.html")
+    lazy val path = Paths.get("tag", s"$name.xhtml")
     def html = {
       val root = path.getParent.relativize(Paths.get("."))
       val css = path.getParent.relativize(Paths.get("style.css"))
@@ -76,7 +76,7 @@ class Articles extends LazyLogging {
     }
   }
   object All {
-    lazy val path = article.resolve("all.html")
+    lazy val path = article.resolve("all.xhtml")
     def html = {
       val root = path.getParent.relativize(Paths.get("."))
       val css = path.getParent.relativize(Paths.get("style.css"))
@@ -98,7 +98,7 @@ class Articles extends LazyLogging {
         )
       )
     }
-    lazy val atomPath = path.toString.replaceFirst(".html$", ".xml")
+    lazy val atomPath = path.toString.replaceFirst(".xhtml$", ".xml")
     def atom = {
       val root = path.getParent.relativize(Paths.get("."))
       val updatedAt = articles.map(_.updatedAt).maxBy(x => x.toInstant.toEpochMilli)
@@ -118,14 +118,14 @@ class Articles extends LazyLogging {
     }
   }
   object Index {
-    lazy val path = Paths.get("./index.html")
+    lazy val path = Paths.get("./index.xhtml")
     def html = {
       val root = Paths.get(".")
       val css = Paths.get("style.css")
       val updatedAt = articles.map(_.updatedAt).maxBy(x => x.toInstant.toEpochMilli)
       val createdAt = articles.map(_.createdAt).maxBy(x => x.toInstant.toEpochMilli)
       val as = articles.sortBy(_.updatedAt.toInstant.toEpochMilli)(implicitly[Ordering[Long]].reverse)
-      val indexMarkdown = as.map(x => s"- [${x.content.title}](${x.path.toString.replaceFirst(".md$", ".html")})").mkString("", "\n", "\n")
+      val indexMarkdown = as.map(x => s"- [${x.content.title}](${x.path.toString.replaceFirst(".md$", ".xhtml")})").mkString("", "\n", "\n")
       layout(
         Map(
           "title" -> s"INDEX",
@@ -143,11 +143,11 @@ class Articles extends LazyLogging {
     }
   }
   object Tags {
-    lazy val path = Paths.get("./tags.html")
+    lazy val path = Paths.get("./tags.xhtml")
     def html = {
       val root = Paths.get(".")
       val css = Paths.get("style.css")
-      val indexMarkdown = allTags.map(tag => s"- [$tag](tag/$tag.html)").mkString("", "\n", "\n")
+      val indexMarkdown = allTags.map(tag => s"- [$tag](tag/$tag.xhtml)").mkString("", "\n", "\n")
       val updatedAt = articles.map(_.updatedAt).maxBy(x => x.toInstant.toEpochMilli)
       val createdAt = articles.map(_.createdAt).maxBy(x => x.toInstant.toEpochMilli)
       layout(
@@ -228,7 +228,7 @@ class Articles extends LazyLogging {
       metaData = metaData.filterKeys(!List("tags", "title").contains(_)).mapValues(asStringPandoc(_)),
       tags = tags,
       title = title,
-      permalink = path.toString.replaceFirst(".md$", ".html"),
+      permalink = path.toString.replaceFirst(".md$", ".xhtml"),
       updatedAt = updatedAt,
       createdAt = createdAt,
       urn = creationId.toURN
@@ -269,8 +269,8 @@ class Articles extends LazyLogging {
     }
     def html: String = {
       val menu = Seq(
-        "# top" -> "index.html",
-        "# tags" -> "tags.html"
+        "# top" -> "index.xhtml",
+        "# tags" -> "tags.xhtml"
       )
       val css = path.getParent.relativize(Paths.get("style.css"))
       logger.info(s"allTags = $allTags")

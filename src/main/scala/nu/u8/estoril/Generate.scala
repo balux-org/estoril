@@ -48,7 +48,7 @@ object Generate extends App with LazyLogging {
   out.close
   try {
     for (article <- articles.articles) {
-      val dst = target.resolve(article.path.toString.replaceFirst(".md$", ".html"))
+      val dst = target.resolve(article.path.toString.replaceFirst(".md$", ".xhtml"))
       logger.info(s"Converting ${article.path} to $dst")
       Files.createDirectories(dst.getParent)
       Files.write(dst, article.html.getBytes("UTF-8"))
@@ -75,7 +75,7 @@ object Generate extends App with LazyLogging {
     logger.info(s"Converting the tag index into $tagsDst")
     Files.createDirectories(tagsDst.getParent)
     Files.write(tagsDst, articles.Tags.html.getBytes("UTF-8"))
-    val aboutDst = target.resolve(articles.About.path.toString.replaceFirst(".md$", ".html"))
+    val aboutDst = target.resolve(articles.About.path.toString.replaceFirst(".md$", ".xhtml"))
     Files.write(aboutDst, articles.About.html.getBytes("UTF-8"))
     logger.info("finished conversion")
   } catch {

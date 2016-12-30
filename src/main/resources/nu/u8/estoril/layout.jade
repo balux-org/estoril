@@ -68,20 +68,20 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
       header#site-header
         label#site-menu(for='site-menu-check') MENU
         h1
-          a(href='#{root}/index.html') Sine Lite Dies
+          a(href='#{root}/index.xhtml') Sine Lite Dies
     #document-root
       input#site-menu-check(type='checkbox' name='check[]' value='c1')
       aside#site-menu-content
-        a(href='#{root}/index.html')
+        a(href='#{root}/index.xhtml')
           h1 index
-        a(href='#{root}/about.html')
+        a(href='#{root}/about.xhtml')
           h1 about
-        a(href='#{root}/article/all.html')
+        a(href='#{root}/article/all.xhtml')
           h1 all articles in one
-        a(href='#{root}/tags.html')
+        a(href='#{root}/tags.xhtml')
           h1 tags
         - for (tag <- allTags)
-          a(href='#{root}/tag/#{tag}.html')
+          a(href='#{root}/tag/#{tag}.xhtml')
             :!pandoc-markdown
               #{tag}
       #document-contents
@@ -105,7 +105,7 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
                 dt tags
                 dd
                   - for (tag <- tags)
-                    a(href='#{root}/tag/#{tag}.html') #{tag}
+                    a(href='#{root}/tag/#{tag}.xhtml') #{tag}
             .body
               :!pandoc-markdown
                 #{body}
