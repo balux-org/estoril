@@ -15,6 +15,8 @@
  */
 package nu.u8.estoril
 
+import java.nio.file.Path
+
 import scala.language.implicitConversions
 
 trait Utils {
@@ -27,4 +29,8 @@ trait Utils {
     }
   }
   implicit def wrap[A](x: A): Some[A] = Some(x)
+  def realpath(relativeTo: Path, target: Path): String = {
+    val r = relativeTo.relativize(target).toString
+    if (r.isEmpty) "." else r
+  }
 }
