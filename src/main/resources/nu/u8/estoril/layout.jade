@@ -26,29 +26,10 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
     link(rel='preload' href='#{root}/FiraCode-Retina.woff2' as='font')
     link(rel='preload' href='#{root}/style.css' as='style')
     script(src='http://code.jquery.com/jquery-1.11.1.min.js')
-    :!javascript
-      sineLiteDies = {}
     /[if lt IE 9]
       script(src='http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js')
       script(src='http://cdnjs.cloudflare.com/ajax/libs/selectivizr/1.0.2/selectivizr-min.js')
       script(src='http://cdnjs.cloudflare.com/ajax/libs/css3pie/2.0beta1/PIE_IE678.js')
-      script sineLiteDies.oldIE = true;
-    :!javascript
-      $(document).ready(function() {
-        // Fix Android Browser and IE8
-        var userAgent = navigator.userAgent;
-        if ((
-          userAgent.indexOf('Mozilla/5.0') > -1 &&
-          userAgent.indexOf('Android ') > -1 &&
-          userAgent.indexOf('AppleWebKit') > -1 &&
-          userAgent.indexOf('Chrome') <= -1) || sineLiteDies.oldIE ) {
-          var label = $('label#site-menu');
-          label.removeAttr('for');
-          label.click(function() {
-            $('aside#site-menu-content').toggle();
-          });
-        }
-      });
     - if (!highlighted.isEmpty)
       script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js')
       - for (lang <- highlighted)
@@ -66,24 +47,9 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
   body
     aside#site-aside
       header#site-header
-        label#site-menu(for='site-menu-check') MENU
         h1
           a(href='#{root}/index.xhtml') Sine Lite Dies
     #document-root
-      input#site-menu-check(type='checkbox' name='check[]' value='c1')
-      aside#site-menu-content
-        a(href='#{root}/index.xhtml')
-          h1 index
-        a(href='#{root}/about.xhtml')
-          h1 about
-        a(href='#{root}/article/all.xhtml')
-          h1 all articles in one
-        a(href='#{root}/tags.xhtml')
-          h1 tags
-        - for (tag <- allTags)
-          a(href='#{root}/tag/#{tag}.xhtml')
-            :!pandoc-markdown
-              #{tag}
       #document-contents
         :!pandoc-markdown
           # #{title}
