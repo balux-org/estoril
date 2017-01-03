@@ -26,6 +26,7 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
     link(rel='preload' href='#{root}/FiraCode-Retina.woff2' as='font')
     link(rel='preload' href='#{root}/style.css' as='style')
     script(src='http://code.jquery.com/jquery-1.11.1.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/0.7.23/ShadowDOM.min.js')
     - if (!highlighted.isEmpty)
       script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js')
       - for (lang <- highlighted)
@@ -40,6 +41,18 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
             });
           });
         });
+    :!javascript
+      document.addEventListener("DOMContentLoaded", function() {
+        Array.prototype.forEach.call(document.getElementsByClassName("mailto"), function(target) {
+          var addr = target.textContent.replace(' -AT- ', '@');
+          var url = 'mailto:' + addr;
+          var shadow = target.attachShadow({ mode: 'open' });
+          var a = document.createElement('a');
+          a.setAttribute('href', url);
+          a.textContent = addr;
+          shadow.appendChild(a);
+        });
+      });
   body
     aside#site-aside
       header#site-header
@@ -72,18 +85,11 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
               :!pandoc-markdown
                 #{body}
       div
-        | <div id="disqus_thread"></div>
-        | <script type="text/javascript">
-        |     /* * * CONFIGURATION VARIABLES * * */
-        |     var disqus_shortname = 'sld3478';
-        |     /* * * DON'T EDIT BELOW THIS LINE * * */
-        |     (function() {
-        |         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        |         dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        |         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        |     })();
-        | </script>
-        | <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        p
+          | コメント機能は開発中です。コメントしたい場合は
+          | <span class='mailto'>tomoaki3478 -AT- u8.nu</span>
+          | にその旨を添えてメールしていてだければさしあたって本文中で引用します。
+          | コメント機能の完成後は通常のコメントに移行します。
       style
         :!plain
           @font-face {
