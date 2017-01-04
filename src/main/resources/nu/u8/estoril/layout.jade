@@ -32,20 +32,9 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
       if (!window.u8nu.estoril)
         window.u8nu.estoril = {};
       window.u8nu.estoril.shadowDOMSupported = !!HTMLElement.prototype.attachShadow;
-    - if (!highlighted.isEmpty)
-      script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js')
-      - for (lang <- highlighted)
-        script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/languages/#{lang}.min.js')
-      :!javascript
-        $(document).ready(function() {
-          hljs.configure({languages: [#{highlighted.mkString("'", "','", "'")}]});
-          $('pre').each(function(i, pre) {
-            Array.prototype.forEach.call(pre.getElementsByTagName('code'), function(code) {
-              $(code).addClass(pre.getAttribute('class'));
-              hljs.highlightBlock(code);
-            });
-          });
-        });
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/theme-solarized_light.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ext-modelist.js')
     :!javascript
       document.addEventListener("DOMContentLoaded", function() {
         // Do not use Shadow DOM polyfill and use closed mode to make it difficult for crawlers to get the mail address,
@@ -61,6 +50,53 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
             shadow.appendChild(a);
           });
         }
+        var modelist = ace.require("ace/ext/modelist");
+        var codes = Array.prototype.slice.call(document.getElementsByTagName('code'));
+        var modes = {};
+        codes.forEach(function (code) {
+          var pre = code.parentElement
+          if (pre.tagName != "pre")
+            return;
+          var classes = pre.className.split(/\s+/);
+          var mode = null;
+          classes.forEach(function(cls) {
+            if (cls in modelist.modesByName)
+              mode = cls;//modelist.modesByName[cls];
+          });
+          var numLine = code.textContent.split(/\r\n|\r|\n/).filter(function (l) { return l.length > 0; }).length;
+          var host = document.createElement('div');
+          host.textContent = code.textContent;
+          pre.parentNode.replaceChild(host, pre);
+          var editor = ace.edit(host);
+          editor.setTheme("ace/theme/solarized_light");
+          if (mode != null) {
+            if (!(mode in modes)) {
+              modes[mode] = [];
+              var script = document.createElement('script');
+              script.type = 'text/javascript';
+              script.src = 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/mode-' + mode + '.js';
+              script.onload = function () {
+                console.log(modes[mode]);
+                modes[mode].forEach(function (f) { f(); });
+              };
+              document.head.appendChild(script);
+            }
+            modes[mode].push(function() { editor.session.setMode("ace/mode/" + mode); });
+          }
+          editor.setOptions({
+              readOnly: true,
+              highlightActiveLine: false,
+              highlightGutterLine: false,
+              showLineNumbers: numLine > 1, // hide line numbers for one line text.
+              autoScrollEditorIntoView: true,
+              showPrintMargin: true,
+              maxLines: 25,
+              minLines: 1,
+          });
+          editor.renderer.$cursorLayer.element.style.opacity = 0;
+          editor.textInput.getElement().disabled = true;
+          editor.commands.commmandKeyBinding = {};
+        });
       });
   body
     aside#site-aside
