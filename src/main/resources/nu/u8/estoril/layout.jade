@@ -76,7 +76,6 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
               script.type = 'text/javascript';
               script.src = 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/mode-' + mode + '.js';
               script.onload = function () {
-                console.log(modes[mode]);
                 modes[mode].forEach(function (f) { f(); });
               };
               document.head.appendChild(script);
