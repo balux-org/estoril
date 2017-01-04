@@ -26,7 +26,12 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
     link(rel='preload' href='#{root}/FiraCode-Retina.woff2' as='font')
     link(rel='preload' href='#{root}/style.css' as='style')
     script(src='http://code.jquery.com/jquery-1.11.1.min.js')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/0.7.23/ShadowDOM.min.js')
+    :!javascript
+      if (!window.u8nu)
+        window.u8nu = {};
+      if (!window.u8nu.estoril)
+        window.u8nu.estoril = {};
+      window.u8nu.estoril.shadowDOMSupported = !!HTMLElement.prototype.attachShadow;
     - if (!highlighted.isEmpty)
       script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js')
       - for (lang <- highlighted)
@@ -43,15 +48,19 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
         });
     :!javascript
       document.addEventListener("DOMContentLoaded", function() {
-        Array.prototype.forEach.call(document.getElementsByClassName("mailto"), function(target) {
-          var addr = target.textContent.replace(' -AT- ', '@');
-          var url = 'mailto:' + addr;
-          var shadow = target.attachShadow({ mode: 'open' });
-          var a = document.createElement('a');
-          a.setAttribute('href', url);
-          a.textContent = addr;
-          shadow.appendChild(a);
-        });
+        // Do not use Shadow DOM polyfill and use closed mode to make it difficult for crawlers to get the mail address,
+        // although, technically, they can get every information they have in their headless browser.
+        if (window.u8nu.estoril.shadowDOMSupported) {
+          Array.prototype.forEach.call(document.getElementsByClassName("mailto"), function(target) {
+            var addr = target.textContent.replace(' -AT- ', '@');
+            var url = 'mailto:' + addr;
+            var shadow = target.attachShadow({ mode: 'closed' });
+            var a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.textContent = addr;
+            shadow.appendChild(a);
+          });
+        }
       });
   body
     aside#site-aside
