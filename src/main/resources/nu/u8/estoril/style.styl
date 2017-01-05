@@ -17,9 +17,11 @@ button-gradient()
   box-shadow inset 0 0 0px 1px rgba(255,255,255,.5) , 0 1px 2px 0px rgba(0,0,0,.6)
   background linear-gradient(bottom, #CFCCC9 0%,#e0dedd 75%)
   border none
+html.font-loaded body
+  font-family "LogoTypeGothic", "Noto Sans Japanese", "Source Han Sans", sans-serif, Symbola
 body
   text-rendering optimizeLegibility
-  font-family "LogoTypeGothic", "Noto Sans Japanese", "Source Han Sans", sans-serif, Symbola
+  font-family "Noto Sans Japanese", "Source Han Sans", sans-serif, Symbola
   button-gradient()
   background-attachment fixed
   color #333
@@ -95,8 +97,11 @@ body
       padding 0
 #site-menu-check:checked~#site-menu-content
   display block
-#site-header
+html.font-loaded #site-header
   font-family "EB Garamond"
+  & label
+    font-family "EB Garamond"
+#site-header
   font-size px(font-size-base + 2 * 2)
   font-height 1
   font-style normal
@@ -119,7 +124,6 @@ body
     background-color #e0dedd
     font-size px(font-size-base + 2 * 2)
     float left
-    font-family "EB Garamond"
     // min-width:120px;
     // min-height:20px;
     margin 0
@@ -145,12 +149,14 @@ body
     position fixed
     top 80px
     left 0
-  #site-header
-    text-align center
+  html.font-loaded #site-header
     font-family "EB Garamond"
-    font-size px(font-size-base + 12 * 2)
     & label
       font-family "EB Garamond"
+  #site-header
+    text-align center
+    font-size px(font-size-base + 12 * 2)
+    & label
       font-size px(font-size-base + 6 * 2)
 #document-root
   min-height 100%
@@ -225,6 +231,8 @@ body
       counter-increment ln
       content counter(ln) ". "
       padding-right 10px
+html.font-loaded .text:before
+  font-family "EB Garamond"
 .text:before
   content "TEXT"
   border 2px solid #444444
@@ -233,6 +241,7 @@ body
   font-size 16px
   line-height 16px
   font-weight bold
+html.font-loaded .translation:before
   font-family "EB Garamond"
 .translation:before
   content "TRANSLATION"
@@ -242,7 +251,6 @@ body
   font-size 16px
   line-height 16px
   font-weight bold
-  font-family "EB Garamond"
 .notes
   background-color #e0dedd
   border 1px solid #888888
@@ -254,10 +262,11 @@ figcaption
   border 1px solid #888888
   display inline-block
   font-size 12px
+html.font-loaded [lang="la"]
+  font-family "EB Garamond"
 [lang="la"]
   font-size 24px
   line-height 24px
-  font-family "EB Garamond"
 .metadata
   & dd p
     padding 0

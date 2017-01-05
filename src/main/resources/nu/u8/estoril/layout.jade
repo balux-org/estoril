@@ -111,6 +111,22 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
           src: url("#{root}/FiraCode-Retina.woff2") format('woff2');
           font-display: swap;
         }
+    :!javascript
+      window.u8nu.estoril.fontDisplaySupported = function() {
+        var style = document.createElement('style');
+        style.textContent = "@font-face { font-display: swap; }";
+        document.documentElement.appendChild(style);
+        var ret = style.sheet.cssRules[0].cssText.indexOf("font-display") != -1;
+        style.remove();
+        return ret;
+      }();
+      if (window.u8nu.estoril.fontDisplaySupported) {
+        document.documentElement.className += " font-loaded";
+      } else {
+        document.addEventListener("DOMContentLoaded", function() {
+          document.documentElement.className += " font-loaded";
+        });
+      }
   body
     aside#site-aside
       header#site-header
