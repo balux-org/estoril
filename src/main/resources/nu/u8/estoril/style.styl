@@ -198,6 +198,15 @@ html.font-loaded #site-header
       // &:before
       //   content unquote(count(i))
       //   counter-increment unquote('section-counter-' + i)
+  aside
+    for i in 1..6
+      h{i}
+        font-weight 1000 - i * 100
+    for i in 1..6
+      h{i}
+        font-size px(font-size-base + (6 - i) / 2)
+    h6::before
+      content "■"
   tt
     margin 0 2px
     padding 0 5px
