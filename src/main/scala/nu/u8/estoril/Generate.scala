@@ -25,7 +25,6 @@ import scala.sys.process._
 import scala.collection.JavaConverters._
 
 object Generate extends App with LazyLogging {
-  val articles = new Articles
   val target = Paths.get("static-site")
   def syncLastModifiedTime(src: Path, dst: Path) =
     Files.setLastModifiedTime(dst, Git.updatedAt(Some(src)).map(x => FileTime.from(x.toInstant)).getOrElse(Files.getLastModifiedTime(src)))
@@ -41,6 +40,23 @@ object Generate extends App with LazyLogging {
     Files.copy(src, dest, StandardCopyOption.REPLACE_EXISTING)
     syncLastModifiedTime(src, dest)
   }
+  def pathIfExists(path: String) = {
+    val x = Paths.get(path)
+    if (Files.exists(x))
+      Some(x)
+    else
+      None
+  }
+  var hasIcon = false
+  for {
+    iconPath <- pathIfExists("icon.png").orElse(pathIfExists("icon.jpg").orElse(pathIfExists("icon.jpeg")))
+  } {
+    hasIcon = true
+    logger.info(Seq("convert", iconPath.toString, "-define", "icon:auto-resize=152,48,32,16", target.resolve("icon.ico").toString).!!)
+    logger.info(Seq("convert", iconPath.toString, "-resize", "152x152", target.resolve("apple-touch-icon.png").toString).!!)
+    Files.copy(iconPath, target.resolve("logo.png"), StandardCopyOption.REPLACE_EXISTING)
+  }
+  val articles = new Articles(hasIcon = hasIcon)
   val out = new FileOutputStream(new File("static-site/style.css"))
   logger.info(Seq("npm", "install", "nib").!!)
   logger.info((Seq("stylus", "--include", "node_modules/nib/lib") #< new ByteArrayInputStream(Resource.style.getBytes(StandardCharsets.UTF_8)) #> out).!!)

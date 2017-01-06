@@ -45,7 +45,7 @@ object Articles {
 
 import Articles._
 
-class Articles extends LazyLogging with Utils {
+class Articles(hasIcon: Boolean = false) extends LazyLogging with Utils {
   val article = Paths.get("article")
   lazy val articles = About :: Files.list(article).iterator.asScala.filter(_.getFileName.toString.endsWith(".md")).map(Article(_)).toList
   lazy val tagMap = articles.map(_.tags).flatten.toSet.map { tag: String => tag -> articles.filter(_.tags.contains(tag)) }.toMap
@@ -70,7 +70,8 @@ class Articles extends LazyLogging with Utils {
           "root" -> root.toString,
           "path" -> path.toString,
           "updatedAt" -> updatedAt,
-          "createdAt" -> createdAt
+          "createdAt" -> createdAt,
+          "hasIcon" -> hasIcon
         )
       )
     }
@@ -94,7 +95,8 @@ class Articles extends LazyLogging with Utils {
           "root" -> root.toString,
           "path" -> path.toString,
           "updatedAt" -> updatedAt,
-          "createdAt" -> createdAt
+          "createdAt" -> createdAt,
+          "hasIcon" -> hasIcon
         )
       )
     }
@@ -112,7 +114,8 @@ class Articles extends LazyLogging with Utils {
           "urn" -> Atom.stringToURN("sine.lite.dies.feed"),
           "path" -> atomPath.toString,
           "updatedAt" -> updatedAt,
-          "createdAt" -> createdAt
+          "createdAt" -> createdAt,
+          "hasIcon" -> hasIcon
         )
       )
     }
@@ -137,7 +140,8 @@ class Articles extends LazyLogging with Utils {
           "root" -> root.toString,
           "path" -> path.toString,
           "updatedAt" -> updatedAt,
-          "createdAt" -> createdAt
+          "createdAt" -> createdAt,
+          "hasIcon" -> hasIcon
         )
       )
     }
@@ -161,7 +165,8 @@ class Articles extends LazyLogging with Utils {
           "root" -> root.toString,
           "path" -> path.toString,
           "updatedAt" -> updatedAt,
-          "createdAt" -> createdAt
+          "createdAt" -> createdAt,
+          "hasIcon" -> hasIcon
         )
       )
     }
@@ -287,7 +292,8 @@ class Articles extends LazyLogging with Utils {
           "menu" -> menu.map { case (k, v) => asStringPandoc(k) -> v },
           "path" -> path.toString,
           "updatedAt" -> updatedAt,
-          "createdAt" -> createdAt
+          "createdAt" -> createdAt,
+          "hasIcon" -> hasIcon
         )
       )
     }
