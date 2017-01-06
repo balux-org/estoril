@@ -45,6 +45,10 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
             a.setAttribute('href', url);
             a.textContent = addr;
             shadow.appendChild(a);
+            var style = document.createElement('link');
+            style.setAttribute('rel', 'stylesheet');
+            style.setAttribute('href', '#{root}/style.css');
+            shadow.appendChild(style);
           });
         }
         var modelist = ace.require("ace/ext/modelist");
