@@ -61,7 +61,7 @@ html.font-loaded #site-header
     text-align center
     margin 0
     padding 0
-    a
+    & a
       text-decoration none
 for i in 1..6
   h{i}
@@ -97,16 +97,16 @@ h6::before
         border-bottom 4px solid #888888
         background-color #cccccc
   for i in 1..6
-    h{i}
+    & h{i}
       font-size unquote("" + (21 - i) + "px")
   aside
     for i in 1..6
-      h{i}
+      & h{i}
         font-weight 1000 - i * 100
     for i in 1..6
-      h{i}
+      & h{i}
         font-size unquote("" + (18 - i / 2) + "px")
-    h6::before
+    & h6::before
       content "■"
 @media screen and (max-width: 1000px)
   pre code
@@ -172,11 +172,11 @@ html.font-loaded [lang="la"]
   & dd p
     padding 0
     margin 0
- dt
-   font-weight bold
-   padding-right 10px
-   float left
-   clear both
+  & dt
+    font-weight bold
+    padding-right 10px
+    float left
+    clear both
 .rust-doc
   background-color: white;
 
