@@ -55,13 +55,22 @@ html.font-loaded #site-header
 #site-header
   lighter-button-gradient()
   & h1
-    font-size 40px
+    font-size 60px
     height 60px
     line-height 60px
-    text-align center
     margin 0
     padding 0
-    & a
+    white-space nowrap
+    & a#site-logo
+      height 60px
+      width 60px
+      float left
+      & img
+        height 60px
+        width 60px
+    & a#site-name
+      height 60px
+      float left
       text-decoration none
 for i in 1..6
   h{i}
