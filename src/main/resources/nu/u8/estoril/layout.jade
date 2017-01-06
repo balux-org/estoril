@@ -140,8 +140,6 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
     section
       #document-root
         #document-contents
-          :!pandoc-markdown
-            # #{title}
           - for (Content(body, metaData, tags, title, permalink, updatedAt, createdAt, urn) <- contents)
             #document-content
               header
