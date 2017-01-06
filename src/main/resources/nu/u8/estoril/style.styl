@@ -79,14 +79,22 @@ h6::before
   lighter-button-gradient()
   & header aside
     button-gradient()
+  for i in 1..6
+    & h{i}
+      font-weight 1000 - i * 100
+  for i in 1..6
+    & h{i}
+      font-size unquote("" + (18 - i / 2) + "px")
+  & h6::before
+    content "■"
+  & .body article
+    lighter-button-gradient()
+    > *
+      padding-left 40px
     for i in 1..6
-      & h{i}
-        font-weight 1000 - i * 100
-    for i in 1..6
-      & h{i}
-        font-size unquote("" + (18 - i / 2) + "px")
-    & h6::before
-      content "■"
+      > h{i}
+        padding-left 0px
+
 @media screen and (max-width: 1000px)
   pre code
     min-width 300%
