@@ -74,42 +74,20 @@ for i in 1..6
 h6::before
   content "■"
 #document-root
-  min-height 100%
-  width 100%
-  border 4px solid  #f8f8f8
-  background-color #ffffff
-  border-radius 8px
-  margin 0 0 0 0
-  padding 0 0 0 0
-  button-gradient()
-  background-attachment fixed
   & #document-content
-    margin 10px 10px 10px 10px
+    margin 0
     padding 0
-    background-color #eeeeee
-    border 4px solid #888888
-    border-radius 4px
-    & header
-      margin 0
-      padding 0
-      padding-bottom 20px
-      & h1
-        margin 0
-        padding 0
-        border-bottom 4px solid #888888
-        background-color #cccccc
-  for i in 1..6
-    & h{i}
-      font-size unquote("" + (21 - i) + "px")
-  aside
-    for i in 1..6
-      & h{i}
-        font-weight 1000 - i * 100
-    for i in 1..6
-      & h{i}
-        font-size unquote("" + (18 - i / 2) + "px")
-    & h6::before
-      content "■"
+    lighter-button-gradient()
+    & header aside
+      button-gradient()
+      for i in 1..6
+        & h{i}
+          font-weight 1000 - i * 100
+      for i in 1..6
+        & h{i}
+          font-size unquote("" + (18 - i / 2) + "px")
+      & h6::before
+        content "■"
 @media screen and (max-width: 1000px)
   pre code
     min-width 300%
