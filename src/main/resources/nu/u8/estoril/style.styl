@@ -40,60 +40,16 @@ body
   word-wrap break-word
   counter-reset section-counter-1
   position relative
-#site-menu-check
-  display none
 ::-webkit-scrollbar
   -webkit-appearance none
   width 7px
 ::-webkit-scrollbar-thumb
   button-gradient()
-  //border-radius 4px
-  //background-color: rgba(0,0,0,.5);
   box-shadow inset 0 0 0px 1px rgba(255,255,255,.5) , 0 1px 2px 0px rgba(0,0,0,.6)
   border-radius 4px
 ::-webkit-scrollbar-track-piece
   background-color #888888
   border-radius 4px
-#site-menu-content
-  z-index 2000
-  max-width 600px
-  min-width 300px
-  overflow-x auto
-  overflow-y scroll
-  height 90%
-  background-color #f8f8f8
-  margin 0
-  padding 0
-  position fixed
-  top 40px
-  left 0
-  background-color #CFCCC9
-  button-gradient()
-  & a
-  & a:link
-  & a:visited
-  & a:hover
-  & a:active
-    box-shadow inset 0 0 0px 1px rgba(255,255,255,.5) , 0 1px 2px 0px rgba(0,0,0,.6)
-    background transparent
-    border none
-    color #333
-    text-decoration none
-    display block
-    border-bottom 1px solid black
-  display none
-  & a
-    & h1
-      text-transform uppercase
-      margin 0
-      margin-left 10px
-      padding 0
-    & p
-      margin 0
-      margin-left 20px
-      padding 0
-#site-menu-check:checked~#site-menu-content
-  display block
 html.font-loaded #site-header
   font-family "EB Garamond", "LogoTypeGothic", "Noto Sans Japanese", "Source Han Sans", sans-serif, Symbola
 #site-header
@@ -140,21 +96,9 @@ h6::before
         padding 0
         border-bottom 4px solid #888888
         background-color #cccccc
-  count(i)
-    buf = ''
-    for j, index in 1..i
-      if index
-        buf += ') "." counter(section-counter-' + j
-      else
-        buf += 'counter(section-counter-' + j
-    buf += ') ". "'
   for i in 1..6
     h{i}
       font-size unquote("" + (21 - i) + "px")
-      // counter-reset unquote('section-counter-' + (i + 1))
-      // &:before
-      //   content unquote(count(i))
-      //   counter-increment unquote('section-counter-' + i)
   aside
     for i in 1..6
       h{i}
@@ -164,13 +108,6 @@ h6::before
         font-size unquote("" + (18 - i / 2) + "px")
     h6::before
       content "■"
-  tt
-    margin 0 2px
-    padding 0 5px
-    white-space nowrap
-    border 1px solid #eaeaea
-    background-color #ffffff
-    border-radius 3px
 @media screen and (max-width: 1000px)
   pre code
     min-width 300%
@@ -187,9 +124,7 @@ h6::before
   counter-reset ln
   box-shadow inset 0 0 0px 1px rgba(255,255,255,.5) , 0 1px 2px 0px rgba(0,0,0,.6)
   background-color rgb(240, 240, 240)
-  //background linear-gradient(bottom, #CFCCC9 0%,#e0dedd 75%)
   border none
-  //button-gradient()
   & p
     padding 0
     margin 0
@@ -237,59 +172,11 @@ html.font-loaded [lang="la"]
   & dd p
     padding 0
     margin 0
-#site-navs
-  margin 0
-  padding 0
-  & nav
-    background linear-gradient(top, #888888, #ccccdc)
-    margin 0
-    padding 0
-    float: left
-    width 150px
-    overflow scroll-y
-    & ul
-      margin 0
-      padding 0
-      list-style-type none
  dt
    font-weight bold
    padding-right 10px
    float left
    clear both
-.treeview
-  &
-  & *
-    padding 0
-    margin 0
-    vertical-align middle
-    list-style none
-  & label
-    &[for]::before
-    & span::before
-      content: "▶"
-      display inline-block
-      margin 2px 0 0
-      width 13px
-      height 13px
-      vertical-align top
-      text-align center
-      color #888888
-      font-size 8px
-      line-height 13px
-      cursor pointer
-    &[for]::before
-      transform(-24px)
-    &:not([for])
-      margin 0 8px 0 0
-  & li
-    user-select(none)
-    & ul
-      margin 0 0 0 22px
-  & input[type="checkbox"][id]
-    &:checked ~ label[for]::before
-      content "▼"
-    &:not(:checked) ~ ul
-      display none
 .rust-doc
   background-color: white;
 
