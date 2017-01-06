@@ -156,10 +156,11 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
                     dd #{createdAt.toLocalDate}
                     dt 最終更新日
                     dd #{updatedAt.toLocalDate}
-                    dt tags
-                    dd
-                      - for (tag <- tags)
-                        a(href='#{root}/tag/#{tag}.xhtml') #{tag}
+                    - if (tags.nonEmpty)
+                      dt tags
+                      dd
+                        - for (tag <- tags)
+                          a(href='#{root}/tag/#{tag}.xhtml') #{tag}
               .body
                 article
                   :!pandoc-markdown
