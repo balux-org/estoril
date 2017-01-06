@@ -8,7 +8,11 @@ button-gradient()
   border none
 lighter-button-gradient()
   box-shadow inset 0 0 0px 1px rgba(255,255,255,.5) , 0 1px 2px 0px rgba(0,0,0,.6)
-  background linear-gradient(bottom, #eeeeee 0%,#ffffff 75%)
+  background linear-gradient(bottom, #e0e0e0 0%,#f0f0f0 75%)
+  border none
+white-button-gradient()
+  box-shadow inset 0 0 0px 1px rgba(255,255,255,.5) , 0 1px 2px 0px rgba(0,0,0,.6)
+  background linear-gradient(bottom, #f0f0f0 0%,#ffffff 75%)
   border none
 dark-button-gradient()
   box-shadow inset 0 0 0px 1px rgba(255,255,255,.5) , 0 1px 2px 0px rgba(0,0,0,.6)
@@ -101,17 +105,13 @@ h6::before
 .text
 .translation
   white-space pre
-  background-color #e0dedd
-  border 1px solid #888888
   font-size 16px
   overflow auto
   margin 5px
   padding 10px
   border-radius 1px
   counter-reset ln
-  box-shadow inset 0 0 0px 1px rgba(255,255,255,.5) , 0 1px 2px 0px rgba(0,0,0,.6)
-  background-color rgb(240, 240, 240)
-  border none
+  white-button-gradient()
   & p
     padding 0
     margin 0
@@ -119,26 +119,6 @@ h6::before
       counter-increment ln
       content counter(ln) ". "
       padding-right 10px
-html.font-loaded .text:before
-  font-family "EB Garamond"
-.text:before
-  content "TEXT"
-  border 2px solid #444444
-  border-radius 2px
-  background-color #CFCCC9
-  font-size 16px
-  line-height 16px
-  font-weight bold
-html.font-loaded .translation:before
-  font-family "EB Garamond"
-.translation:before
-  content "TRANSLATION"
-  border 2px solid #444444
-  border-radius 2px
-  background-color #CFCCC9
-  font-size 16px
-  line-height 16px
-  font-weight bold
 .notes
   background-color #e0dedd
   border 1px solid #888888
