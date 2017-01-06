@@ -73,21 +73,20 @@ for i in 1..6
     font-size unquote("" + (21 - i) + "px")
 h6::before
   content "■"
-#document-root
-  & #document-content
-    margin 0
-    padding 0
-    lighter-button-gradient()
-    & header aside
-      button-gradient()
-      for i in 1..6
-        & h{i}
-          font-weight 1000 - i * 100
-      for i in 1..6
-        & h{i}
-          font-size unquote("" + (18 - i / 2) + "px")
-      & h6::before
-        content "■"
+#document-content
+  margin 0
+  padding 0
+  lighter-button-gradient()
+  & header aside
+    button-gradient()
+    for i in 1..6
+      & h{i}
+        font-weight 1000 - i * 100
+    for i in 1..6
+      & h{i}
+        font-size unquote("" + (18 - i / 2) + "px")
+    & h6::before
+      content "■"
 @media screen and (max-width: 1000px)
   pre code
     min-width 300%
