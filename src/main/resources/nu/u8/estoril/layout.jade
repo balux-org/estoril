@@ -9,6 +9,7 @@
 -@ val createdAt: ZonedDateTime
 -@ val root: String
 -@ val highlighted: Set[String]
+- val highlightedJSArray = highlighted.map(lang => "\"" + lang + "\"").mkString("[", ",", "]")
 -@ val path: String
 -@ val hasIcon: Boolean
 !!! XML
@@ -32,9 +33,6 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
       if (!window.u8nu.estoril)
         window.u8nu.estoril = {};
       window.u8nu.estoril.shadowDOMSupported = !!HTMLElement.prototype.attachShadow;
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/theme-solarized_light.js')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ext-modelist.js')
     :!javascript
       document.addEventListener("DOMContentLoaded", function() {
         // Do not use Shadow DOM polyfill and use closed mode to make it difficult for crawlers to get the mail address,
@@ -54,52 +52,47 @@ html(xmlns='http://www.w3.org/1999/xhtml' lang='ja' xml:lang='ja')
             shadow.appendChild(style);
           });
         }
-        var modelist = ace.require("ace/ext/modelist");
-        var codes = Array.prototype.slice.call(document.getElementsByTagName('code'));
-        var modes = {};
-        codes.forEach(function (code) {
-          var pre = code.parentElement
-          if (pre.tagName != "pre")
-            return;
-          var classes = pre.className.split(/\s+/);
-          var mode = null;
-          classes.forEach(function(cls) {
-            if (cls in modelist.modesByName)
-              mode = cls;//modelist.modesByName[cls];
-          });
-          var numLine = code.textContent.split(/\r\n|\r|\n/).filter(function (l) { return l.length > 0; }).length;
-          var host = document.createElement('div');
-          host.textContent = code.textContent;
-          pre.parentNode.replaceChild(host, pre);
-          var editor = ace.edit(host);
-          editor.setTheme("ace/theme/solarized_light");
-          if (mode != null) {
-            if (!(mode in modes)) {
-              modes[mode] = [];
-              var script = document.createElement('script');
-              script.type = 'text/javascript';
-              script.src = 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/mode-' + mode + '.js';
-              script.onload = function () {
-                modes[mode].forEach(function (f) { f(); });
-              };
-              document.head.appendChild(script);
+        var highlighted = #{highlightedJSArray};
+        if (highlighted.length > 0) {
+          var hjs_script = document.createElement('script');
+          hjs_script.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js');
+          function hjs_script_onload() {
+            console.log("hjs_script_onload");
+            if (highlighted.length > 0) {
+              var lang = highlighted.pop();
+              var hjs_lang_script = document.createElement('script');
+              hjs_lang_script.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/' + lang + '.min.js');
+              hjs_lang_script.onload = hjs_script_onload;
+              document.head.appendChild(hjs_lang_script);
+            } else {
+              function hljs_style() {
+                var hjs_css = document.createElement('link');
+                hjs_css.setAttribute('rel', 'stylesheet');
+                hjs_css.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/solarized-light.min.css');
+                return hjs_css;
+              }
+              if (!window.u8nu.estoril.shadowDOMSupported)
+                document.head.appendChild(hljs_style());
+              Array.prototype.forEach.call(document.querySelectorAll('pre code'), function(code) {
+                var pre = code.parentNode;
+                var host = document.createElement('div');
+                pre.parentNode.replaceChild(host, pre);
+                host.appendChild(pre);
+                if (window.u8nu.estoril.shadowDOMSupported) {
+                  var shadow = host.attachShadow({ mode: 'open' });
+                  shadow.appendChild(hljs_style());
+                  var clone = pre.cloneNode(true);
+                  hljs.highlightBlock(clone);
+                  shadow.appendChild(clone);
+                } else {
+                  hljs.highlightBlock(pre);
+                }
+              });
             }
-            modes[mode].push(function() { editor.session.setMode("ace/mode/" + mode); });
-          }
-          editor.setOptions({
-              readOnly: true,
-              highlightActiveLine: false,
-              highlightGutterLine: false,
-              showLineNumbers: numLine > 1, // hide line numbers for one line text.
-              autoScrollEditorIntoView: true,
-              showPrintMargin: true,
-              maxLines: 25,
-              minLines: 1,
-          });
-          editor.renderer.$cursorLayer.element.style.opacity = 0;
-          editor.textInput.getElement().disabled = true;
-          editor.commands.commmandKeyBinding = {};
-        });
+          };
+          hjs_script.onload = hjs_script_onload;
+          document.head.appendChild(hjs_script);
+        }
       });
     style
       :!plain
