@@ -45,8 +45,6 @@ testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-e")
 
 addCompilerPlugin("org.psywerx.hairyfotr" %% "linter" % "0.1.17")
 
-scalafixSemanticdbVersion := "4.0.0-M9"
-
 // publish to dist/maven in Maven style.
 // After publishing, we rsync the generated files to our remote Maven repository.
 // Note that SBT cannot resolve a local Maven repository.
