@@ -215,7 +215,7 @@ class Articles(hasIcon: Boolean = false) extends LazyLogging with Utils {
       }
       val yamls = readRest(acc, rest)
       val yaml = new Yaml
-      val metaDataList: List[Map[String, Any]] = for (y <- yamls) yield yaml.load(y) match {
+      val metaDataList: List[Map[String, Any]] = for (y <- yamls) yield yaml.load[AnyRef](y) match {
         case xs: java.util.Map[_, _] => xs.asScala.map { case (k, v) => asString(k) -> v }.toMap
         case xs: java.util.List[_] => xs.asScala.toList.zipWithIndex.map { case (x, i) => s"_$i" -> x }.toMap
       }
