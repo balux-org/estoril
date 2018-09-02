@@ -11,6 +11,8 @@ scalacOptions ++= Seq(
   "-Xlint:_"
 )
 
+val Log4J2Version = "2.11.1"
+
 libraryDependencies ++= Seq(
   "com.atlassian.commonmark" % "commonmark" % "0.11.0",
   "com.h2database" % "h2" % "1.4.197",
@@ -22,6 +24,10 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-parser" % "0.9.3",
   "net.jcazevedo" %% "moultingyaml" % "0.4.0",
   "org.apache.httpcomponents" % "httpclient" % "4.5.6",
+  "org.apache.logging.log4j" % "log4j-api" % Log4J2Version,
+  "org.apache.logging.log4j" % "log4j-core" % Log4J2Version % Optional,
+  "org.apache.logging.log4j" % "log4j-web" % Log4J2Version % Optional,
+  "org.apache.logging.log4j" % "log4j-slf4j-impl" % Log4J2Version % Optional,
   "org.eclipse.jgit" % "org.eclipse.jgit" % "5.0.2.201807311906-r",
   "org.scalactic" %% "scalactic" % "3.0.5",
   "org.scalatra.scalate" %% "scalate-core" % "1.8.0",
@@ -29,7 +35,6 @@ libraryDependencies ++= Seq(
   "org.spire-math" %% "jawn-ast" % "0.13.0",
   "org.spire-math" %% "jawn-parser" % "0.13.0",
   "org.yaml" % "snakeyaml" % "1.23",
-  "ch.qos.logback" % "logback-classic" % "1.2.3" % Optional,
   "org.scalamock" %% "scalamock-scalatest-support" % "3.6.0" % Test,
   "org.scalatest" %% "scalatest" % "3.0.5" % Test
 )
