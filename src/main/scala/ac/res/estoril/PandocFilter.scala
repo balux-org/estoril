@@ -1,4 +1,4 @@
-/* Copyright (C) 2014,2016 Takezoe,Tomoaki <tomoaki3478@u8.nu>
+/* Copyright (C) 2014,2016,2018 Takezoe,Tomoaki <tomoaki3478@res.ac>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package nu.u8.estoril
+package ac.res.estoril
 
 import com.typesafe.scalalogging.LazyLogging
 import org.fusesource.scalate.RenderContext

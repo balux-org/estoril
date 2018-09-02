@@ -1,4 +1,4 @@
-/* Copyright (C) 2014,2016 Takezoe,Tomoaki <tomoaki3478@u8.nu>
+/* Copyright (C) 2016,2018 Takezoe,Tomoaki <tomoaki3478@res.ac>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -13,11 +13,23 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package nu.u8.estoril
+package ac.res.estoril
 
-import java.security._
-import org.apache.commons.codec.binary.Base32
+import java.nio.file.Path
 
-object Atom {
-  def stringToURN(x: String) = s"urn:sha1:${new Base32().encodeToString(MessageDigest.getInstance("SHA-1").digest(x.getBytes("UTF-8")))}"
+import scala.language.implicitConversions
+
+trait Utils {
+  object :::: {
+    def unapply[A](xs: Seq[A]): Option[(A, Seq[A])] = {
+      xs.headOption.map { x =>
+        (x, (xs.genericBuilder[A] ++= xs.tail).result)
+      }
+    }
+  }
+  implicit def wrap[A](x: A): Some[A] = Some(x)
+  def realpath(relativeTo: Path, target: Path): String = {
+    val r = relativeTo.relativize(target).toString
+    if (r.isEmpty) "." else r
+  }
 }

@@ -1,4 +1,4 @@
-organization := "nu.u8"
+organization := "ac.res"
 name := "estoril"
 
 scalaVersion := "2.12.6"

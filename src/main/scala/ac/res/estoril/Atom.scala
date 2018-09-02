@@ -1,4 +1,4 @@
-/* Copyright (C) 2016 Takezoe,Tomoaki <tomoaki3478@u8.nu>
+/* Copyright (C) 2014,2016,2018 Takezoe,Tomoaki <tomoaki3478@res.ac>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -13,8 +13,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package nu.u8.estoril
+package ac.res.estoril
 
-import org.scalatest._
+import java.security._
+import org.apache.commons.codec.binary.Base32
 
-trait Spec extends FeatureSpec with DiagrammedAssertions with GivenWhenThen {}
+object Atom {
+  def stringToURN(x: String) = s"urn:sha1:${new Base32().encodeToString(MessageDigest.getInstance("SHA-1").digest(x.getBytes("UTF-8")))}"
+}
