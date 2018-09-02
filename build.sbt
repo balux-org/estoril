@@ -1,13 +1,11 @@
 organization := "nu.u8"
 name := "estoril"
 
-scalaVersion := "2.12.1"
+scalaVersion := "2.12.6"
 scalacOptions ++= Seq(
   "-deprecation",
   "-encoding", "UTF-8",
   "-feature",
-  "-opt:l:classpath",
-  "-opt-warnings:_",
   "-Xcheckinit",
   "-Xlint:_"
 )
