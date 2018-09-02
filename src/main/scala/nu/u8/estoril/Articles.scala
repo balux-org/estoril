@@ -16,12 +16,14 @@
 package nu.u8.estoril
 
 import java.nio.file.attribute.BasicFileAttributes
-import java.time.{ ZonedDateTime, LocalDate, ZoneId }
+import java.time.ZonedDateTime
+import java.time.LocalDate
+import java.time.ZoneId
 
 import com.typesafe.scalalogging.LazyLogging
 import org.apache.commons.codec.binary.Base32
 import org.eclipse.jgit.lib.ObjectId
-import org.fusesource.scalate.{ layout => _, TemplateEngine => _, _ }
+import org.fusesource.scalate.{layout => _, TemplateEngine => _, _}
 import java.nio.file._
 import org.fusesource.scalate.scaml.ScamlOptions
 import org.yaml.snakeyaml.Yaml
@@ -48,7 +50,14 @@ import Articles._
 class Articles(hasIcon: Boolean = false) extends LazyLogging with Utils {
   val article = Paths.get("article")
   lazy val articles = About :: Files.list(article).iterator.asScala.filter(_.getFileName.toString.endsWith(".md")).map(Article(_)).toList
-  lazy val tagMap = articles.map(_.tags).flatten.toSet.map { tag: String => tag -> articles.filter(_.tags.contains(tag)) }.toMap
+  lazy val tagMap = articles
+    .map(_.tags)
+    .flatten
+    .toSet
+    .map { tag: String =>
+      tag -> articles.filter(_.tags.contains(tag))
+    }
+    .toMap
   lazy val allTags = articles.map(_.tags).flatten.toSet.toList.sorted
   case class Tag(name: String) {
     lazy val path = Paths.get("tag", s"$name.xhtml")
@@ -132,7 +141,17 @@ class Articles(hasIcon: Boolean = false) extends LazyLogging with Utils {
       layout(
         Map(
           "title" -> s"INDEX",
-          "contents" -> Seq(Content(body = indexMarkdown, metaData = Map(), tags = List(), title = "記事一覧", permalink = path.toString, updatedAt = updatedAt, createdAt = createdAt, urn = Atom.stringToURN("sine.lite.dies.index"))),
+          "contents" -> Seq(
+            Content(
+              body = indexMarkdown,
+              metaData = Map(),
+              tags = List(),
+              title = "記事一覧",
+              permalink = path.toString,
+              updatedAt = updatedAt,
+              createdAt = createdAt,
+              urn = Atom.stringToURN("sine.lite.dies.index")
+            )),
           "lang" -> "ja",
           "css" -> css.toString,
           "allTags" -> allTags,
@@ -157,7 +176,17 @@ class Articles(hasIcon: Boolean = false) extends LazyLogging with Utils {
       layout(
         Map(
           "title" -> s"TAGS",
-          "contents" -> Seq(Content(body = indexMarkdown, metaData = Map(), tags = List(), title = "タグ一覧", permalink = path.toString, updatedAt = updatedAt, createdAt = createdAt, urn = Atom.stringToURN("sine.lite.dies.tags"))),
+          "contents" -> Seq(
+            Content(
+              body = indexMarkdown,
+              metaData = Map(),
+              tags = List(),
+              title = "タグ一覧",
+              permalink = path.toString,
+              updatedAt = updatedAt,
+              createdAt = createdAt,
+              urn = Atom.stringToURN("sine.lite.dies.tags")
+            )),
           "lang" -> "ja",
           "css" -> css.toString,
           "allTags" -> allTags,
@@ -215,10 +244,12 @@ class Articles(hasIcon: Boolean = false) extends LazyLogging with Utils {
       }
       val yamls = readRest(acc, rest)
       val yaml = new Yaml
-      val metaDataList: List[Map[String, Any]] = for (y <- yamls) yield yaml.load[AnyRef](y) match {
-        case xs: java.util.Map[_, _] => xs.asScala.map { case (k, v) => asString(k) -> v }.toMap
-        case xs: java.util.List[_] => xs.asScala.toList.zipWithIndex.map { case (x, i) => s"_$i" -> x }.toMap
-      }
+      val metaDataList: List[Map[String, Any]] = for (y <- yamls)
+        yield
+          yaml.load[AnyRef](y) match {
+            case xs: java.util.Map[_, _] => xs.asScala.map { case (k, v) => asString(k) -> v }.toMap
+            case xs: java.util.List[_] => xs.asScala.toList.zipWithIndex.map { case (x, i) => s"_$i" -> x }.toMap
+          }
       metaDataList.foldLeft(Map[String, Any]()) { case (acc, x) => acc ++ x }
     }
     lazy val tags: List[String] = metaData.lift("tags") match {

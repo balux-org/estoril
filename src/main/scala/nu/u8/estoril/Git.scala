@@ -28,15 +28,19 @@ import org.apache.commons.codec.binary.Base32
 object Git extends LazyLogging {
   def updatedAt(path: Option[Path] = None): Option[ZonedDateTime] =
     try {
-      (Seq("git", "log", "-1", "--date=iso", "--pretty=format:%ad") ++ path.toSeq.flatMap(x => Seq("--follow", x.toString)))
-        .lineStream.dropWhile(_.isEmpty).headOption.map(ZonedDateTime.parse(_, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")))
+      (Seq("git", "log", "-1", "--date=iso", "--pretty=format:%ad") ++ path.toSeq.flatMap(x => Seq("--follow", x.toString))).lineStream
+        .dropWhile(_.isEmpty)
+        .headOption
+        .map(ZonedDateTime.parse(_, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")))
     } catch {
       case _: RuntimeException =>
         None
     }
   def createdAt(path: Option[Path] = None): Option[ZonedDateTime] =
-    (Seq("git", "log", "--reverse", "--date=iso", "--pretty=format:%ad") ++ path.toSeq.flatMap(x => Seq("--follow", x.toString)))
-      .lineStream.dropWhile(_.isEmpty).headOption.map(ZonedDateTime.parse(_, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")))
+    (Seq("git", "log", "--reverse", "--date=iso", "--pretty=format:%ad") ++ path.toSeq.flatMap(x => Seq("--follow", x.toString))).lineStream
+      .dropWhile(_.isEmpty)
+      .headOption
+      .map(ZonedDateTime.parse(_, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z")))
   private[this] val GitDiffIndexLine = "index [0-9a-f]+\\.\\.([0-9a-f]+)".r
   def creationId(path: Path) =
     Seq("git", "log", "--full-index", "--reverse", "--follow", "-p", path.toString).lineStream.find(_.startsWith("index ")) match {

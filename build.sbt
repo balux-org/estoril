@@ -4,7 +4,8 @@ name := "estoril"
 scalaVersion := "2.12.6"
 scalacOptions ++= Seq(
   "-deprecation",
-  "-encoding", "UTF-8",
+  "-encoding",
+  "UTF-8",
   "-feature",
   "-Xcheckinit",
   "-Xlint:_"
@@ -30,7 +31,8 @@ libraryDependencies ++= Seq(
   "org.yaml" % "snakeyaml" % "1.23",
   "ch.qos.logback" % "logback-classic" % "1.2.3" % Optional,
   "org.scalamock" %% "scalamock-scalatest-support" % "3.6.0" % Test,
-  "org.scalatest" %% "scalatest" % "3.0.5" % Test)
+  "org.scalatest" %% "scalatest" % "3.0.5" % Test
+)
 
 testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-e")
 
@@ -43,4 +45,3 @@ addCompilerPlugin("org.psywerx.hairyfotr" %% "linter" % "0.1.17")
 publishTo := Some(Resolver.file("dist-maven", file("dist/maven")))
 
 mainClass in assembly := Some("nu.u8.estoril.Generate")
-

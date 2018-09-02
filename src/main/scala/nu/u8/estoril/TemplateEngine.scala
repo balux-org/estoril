@@ -17,21 +17,24 @@ package nu.u8.estoril
 
 import java.io.InputStream
 import java.net.URI
-import java.nio.file.{ Files, Paths, StandardOpenOption }
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardOpenOption
 
 import org.fusesource.scalate.util.Resource
 
 class TemplateEngine extends org.fusesource.scalate.TemplateEngine with Utils {
-  resourceLoader = _uri => new Resource {
-    override def uri: String = _uri
+  resourceLoader = _uri =>
+    new Resource {
+      override def uri: String = _uri
 
-    lazy val path = Paths.get(new URI(uri))
+      lazy val path = Paths.get(new URI(uri))
 
-    override def inputStream: InputStream = {
-      Files.newInputStream(path, StandardOpenOption.READ)
-    }
+      override def inputStream: InputStream = {
+        Files.newInputStream(path, StandardOpenOption.READ)
+      }
 
-    override def lastModified: Long = Files.getLastModifiedTime(path).toMillis
+      override def lastModified: Long = Files.getLastModifiedTime(path).toMillis
   }
 
 }

@@ -17,6 +17,4 @@ package nu.u8.estoril
 
 import org.scalatest._
 
-trait Spec extends FeatureSpec with DiagrammedAssertions with GivenWhenThen {
-
-}
+trait Spec extends FeatureSpec with DiagrammedAssertions with GivenWhenThen {}

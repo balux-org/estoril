@@ -18,7 +18,8 @@ package nu.u8.estoril
 import java.net.URI
 import java.nio.file._
 
-import org.fusesource.scalate.{ Template, TemplateEngine }
+import org.fusesource.scalate.Template
+import org.fusesource.scalate.TemplateEngine
 
 import scala.collection.mutable
 import scala.collection.JavaConverters._
@@ -42,7 +43,8 @@ object Resource {
   type Layout = Map[String, Any] => String
   private[this] def loadJade(name: String)(templateEngine: TemplateEngine): Layout = {
     val template = templateEngine.load(nameToPath(name).toUri.toString)
-    attrs => templateEngine.layout(template.source.uri, template, attrs)
+    attrs =>
+      templateEngine.layout(template.source.uri, template, attrs)
   }
   val layout: TemplateEngine => Layout = loadJade("layout.jade")
   val feed: TemplateEngine => Layout = loadJade("feed.jade")

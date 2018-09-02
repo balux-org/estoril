@@ -22,9 +22,8 @@ import scala.language.implicitConversions
 trait Utils {
   object :::: {
     def unapply[A](xs: Seq[A]): Option[(A, Seq[A])] = {
-      xs.headOption.map {
-        x =>
-          (x, (xs.genericBuilder[A] ++= xs.tail).result)
+      xs.headOption.map { x =>
+        (x, (xs.genericBuilder[A] ++= xs.tail).result)
       }
     }
   }
