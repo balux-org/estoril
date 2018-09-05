@@ -208,7 +208,7 @@ class Articles(hasIcon: Boolean = false) extends LazyLogging with Utils {
       case x => x.toString
     }
     private[this] def asStringPandoc(x: Any) = x match {
-      case x: String => PandocFilter.pandocConvert(x)
+      case x: String => MarkdownFilter.convert(x)
       case x => asString(x)
     }
     lazy val src = new String(Files.readAllBytes(path), "UTF-8")
