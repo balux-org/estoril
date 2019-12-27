@@ -4,6 +4,8 @@
  *)
 val from_sedlex : Sedlexing.lexbuf -> unit -> Parser.token
 
+val from_string : string -> unit -> Parser.token
+
 val from_channel : in_channel -> unit -> Parser.token
 
 val from_file_descr : Unix.file_descr -> unit -> Parser.token
