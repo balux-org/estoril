@@ -92,6 +92,12 @@ and read_raw lexbuf =
   | any, Star (Sub (any, 0 .. 127)) -> [ OTHER_PLAIN (loc lexbuf, lexeme lexbuf) ]
   | _ -> failwith "read error"
 
-let new_reader lexbuf =
+let from_sedlex lexbuf =
   let token_buffer = ref [] in
   fun () -> read token_buffer lexbuf
+
+let from_channel channel = Sedlexing.Utf8.from_channel channel |> from_sedlex
+
+let from_file_descr fd = Unix.in_channel_of_descr fd |> from_channel
+
+let from_filename filename = Unix.openfile filename [ Unix.O_RDONLY; Unix.O_CLOEXEC ] 0 |> from_file_descr
