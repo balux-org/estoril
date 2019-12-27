@@ -91,3 +91,7 @@ and read_raw lexbuf =
   | '|' -> [ VERTICAL (loc lexbuf) ]
   | any, Star (Sub (any, 0 .. 127)) -> [ OTHER_PLAIN (loc lexbuf, lexeme lexbuf) ]
   | _ -> failwith "read error"
+
+let new_reader lexbuf =
+  let token_buffer = ref [] in
+  fun () -> read token_buffer lexbuf
