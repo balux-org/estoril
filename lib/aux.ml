@@ -3,4 +3,3 @@
  * SPDX-Identifier: Apache-2.0 WITH LLVM-exception
  *)
 
-let parse rule lexer = MenhirLib.Convert.Simplified.traditional2revised rule lexer
