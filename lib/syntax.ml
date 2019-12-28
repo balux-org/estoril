@@ -3,7 +3,7 @@
  * SPDX-Identifier: Apache-2.0 WITH LLVM-exception
  *)
 
-type url = Url of string
+type url = Url of string [@@deriving show]
 
 type inline =
   | Plain of string
@@ -16,8 +16,9 @@ type inline =
   | SuperScript of inline list
   | Emphasis of inline list
   | Strong of inline list
+[@@deriving show]
 
-type table_row = inline list list
+type table_row = inline list list [@@deriving show]
 
 type block =
   | Table of table_row * table_row list
@@ -33,5 +34,6 @@ type block =
   | H6 of inline list * string option
   | Paragraph of inline list
   | CodeBlock of string option * string
+[@@deriving show]
 
-type document = Document of block list
+type document = Document of block list [@@deriving show]

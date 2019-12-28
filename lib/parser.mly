@@ -16,9 +16,9 @@ document : blocks EOF { Document $1 }
 block: paragraph | h1 | h2 | h3 | h4 | h5 | h6 | block_quote | code_block | line_block | bullet_list | ordered_list | task_list
   | def_list | sep | table | note { $1 }
 
-blocks: separated_nonempty_list(NL+, block) { $1 }
+blocks: separated_list(NL+, block) { $1 }
 
-paragraph: line+ NL { Paragraph (List.concat $1) }
+paragraph: line+ { Paragraph (List.concat $1) }
 
 %inline
 h(NS): NS SPACE inline option(LCBRACKET SPACE? NUMBERSIGN_1 IDENTIFIER SPACE? RCBRACKET { let _, id = $4 in id }) NL { $3, $4 }

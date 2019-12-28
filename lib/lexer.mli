@@ -2,12 +2,18 @@
  *
  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  *)
-val from_sedlex : Sedlexing.lexbuf -> unit -> Parser.token
+type context
 
-val from_string : string -> unit -> Parser.token
+type t = { read : unit -> Token.token; context : context; lexbuf : Sedlexing.lexbuf }
 
-val from_channel : in_channel -> unit -> Parser.token
+val from_sedlex : Sedlexing.lexbuf -> t
 
-val from_file_descr : Unix.file_descr -> unit -> Parser.token
+val from_string : string -> t
 
-val from_filename : string -> unit -> Parser.token
+val from_channel : in_channel -> t
+
+val from_file_descr : Unix.file_descr -> t
+
+val from_filename : string -> t
+
+val parse : (Token.token, 'a) MenhirLib.Convert.traditional -> t -> 'a

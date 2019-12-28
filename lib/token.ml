@@ -3,15 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  *)
 type token =
-  | ASTERISK_2_LEFT of Location.t
   | ASTERISK_2_RIGHT of Location.t
-  | ASTERISK_LEFT of Location.t
+  | ASTERISK_2_LEFT of Location.t
   | ASTERISK_RIGHT of Location.t
+  | ASTERISK_LEFT of Location.t
   | BLOCK_QUOTE_END of Location.t
   | BLOCK_QUOTE_START of Location.t
   | CIRCUMFLEX of Location.t
-  | CIRCUMFLEX_LEFT of Location.t
   | CIRCUMFLEX_RIGHT of Location.t
+  | CIRCUMFLEX_LEFT of Location.t
   | CODE_BLOCK of (Location.t * string option * string)
   | COLON of Location.t
   | DECIMAL of Location.t
@@ -41,10 +41,10 @@ type token =
   | SEMICOLON of Location.t
   | SPACE
   | TASK_LIST_START of (Location.t * bool)
-  | TILDE_2_LEFT of Location.t
   | TILDE_2_RIGHT of Location.t
-  | TILDE_LEFT of Location.t
+  | TILDE_2_LEFT of Location.t
   | TILDE_RIGHT of Location.t
+  | TILDE_LEFT of Location.t
   | URL of (Location.t * string)
   | VERBATIM of (Location.t * string)
   | VERTICAL of Location.t
