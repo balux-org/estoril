@@ -1,13 +1,18 @@
 (library
  (public_name estoril)
  (libraries base sedlex zarith camomile batteries xmlm)
- (modules lexer parser location syntax)
+ (modules lexer parser location syntax token)
  (preprocess
   (pps sedlex.ppx)))
 
 (menhir
- (flags --explain)
- (modules parser))
+ (flags --explain --only-tokens)
+ (modules token))
+
+(menhir
+ (flags --explain --external-tokens Token)
+ (modules parser token)
+ (merge_into parser))
 
 (env
  (dev

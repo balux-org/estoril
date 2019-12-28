@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
  *)
 
-open Parser
+open Token
 
 let rec read token_buffer lexbuf =
   match !token_buffer with
