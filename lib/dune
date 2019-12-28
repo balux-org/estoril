@@ -3,11 +3,7 @@
  (libraries base sedlex zarith camomile batteries xmlm)
  (modules lexer parser location syntax token)
  (preprocess
-  (pps sedlex.ppx)))
-
-(menhir
- (flags --explain --only-tokens)
- (modules token))
+  (pps sedlex.ppx ppx_deriving.show)))
 
 (menhir
  (flags --explain --external-tokens Token)

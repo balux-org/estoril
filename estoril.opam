@@ -24,4 +24,5 @@ depends: [
   "camomile"
   "batteries"
   "xmlm"
+  "ppx_deriving"
 ]
