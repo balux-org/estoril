@@ -90,7 +90,7 @@ and read_raw lexbuf =
       [ VERBATIM (loc lexbuf, String.sub s 1 (String.length s - 1)) ]
   | '|' -> [ VERTICAL (loc lexbuf) ]
   | any, Star (Sub (any, 0 .. 127)) -> [ OTHER_PLAIN (loc lexbuf, lexeme lexbuf) ]
-  | _ -> failwith "read error"
+  | _ -> [ EOF (loc lexbuf) ]
 
 let from_sedlex lexbuf =
   let token_buffer = ref [] in
