@@ -41,6 +41,8 @@ depends: [
   "ocamlfind" {= "1.8.1"}
   "ocamlformat" {= "0.12"}
   "odoc" {= "1.4.2"}
+  "ounit" {= "2.2.1"}
+  "ounit2" {= "2.2.1"}
   "ppx_derivers" {= "1.2.1"}
   "ppx_deriving" {= "4.4"}
   "ppx_tools" {= "5.3+4.08.0"}
@@ -53,6 +55,7 @@ depends: [
   "sexplib0" {= "v0.13.0"}
   "sqlite3" {= "5.0.1"}
   "stdio" {= "v0.13.0"}
+  "stdlib-shims" {= "0.1.0"}
   "topkg" {= "1.0.1"}
   "tyxml" {= "4.3.0"}
   "uchar" {= "0.0.2"}

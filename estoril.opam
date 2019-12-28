@@ -16,6 +16,7 @@ depends: [
   "ocaml"
   "dune" {build}
   "ocamlformat" {build}
+  "ounit" {build}
   "base"
   "sedlex"
   "menhir"
