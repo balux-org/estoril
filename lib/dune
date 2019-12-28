@@ -1,7 +1,7 @@
 (library
  (public_name estoril)
- (libraries base sedlex zarith camomile batteries xmlm)
- (modules lexer parser location syntax token)
+ (libraries base sedlex zarith camomile batteries xmlm menhirLib)
+ (modules lexer parser location syntax token aux)
  (preprocess
   (pps sedlex.ppx ppx_deriving.show)))
 
