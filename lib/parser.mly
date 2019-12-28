@@ -21,7 +21,7 @@ blocks: separated_list(NL+, block) { $1 }
 paragraph: line+ { Paragraph (List.concat $1) }
 
 %inline
-h(NS): NS SPACE inline option(LCBRACKET SPACE? NUMBERSIGN_1 IDENTIFIER SPACE? RCBRACKET { let _, id = $4 in id }) NL { $3, $4 }
+h(NS): NS SPACE inline option(LCBRACKET SPACE? NUMBERSIGN_1 IDENTIFIER SPACE? RCBRACKET { let _, id = $4 in id }) { $3, $4 }
 
 h1: h(NUMBERSIGN_1) { let h, id = $1 in H1 (h, id) }
 h2: h(NUMBERSIGN_2) { let h, id = $1 in H2 (h, id) }
@@ -42,14 +42,14 @@ bullet_list_2: nonempty_list(SPACE PLUS SPACE bullet_list_2_content { $3 }) { no
 bullet_list_2_content: line | bullet_list_3 NL { noimpl () }
 bullet_list_3: nonempty_list(SPACE HYPHEN SPACE line { $3 }) { noimpl () }
 
-ordered_list: nonempty_list(DECIMAL DOT SPACE line { $1, $4 }) NL { noimpl () }
+ordered_list: nonempty_list(DECIMAL DOT SPACE line { $1, $4 }) { noimpl () }
 
-task_list: nonempty_list(TASK_LIST_START SPACE inline NL { let _, check = $1 in check, $3 }) NL { TaskList $1 }
+task_list: nonempty_list(TASK_LIST_START SPACE inline NL { let _, check = $1 in check, $3 }) { TaskList $1 }
 
 (* MediaWiki-like definition list *)
 def_list: nonempty_list(SEMICOLON SPACE line COLON SPACE line { $3, $6 }) NL { DefList $1 }
 
-sep: HYPHEN+ NL { Sep }
+sep: HYPHEN+ { Sep }
 
 table_row_line: VERTICAL nonempty_list(inline VERTICAL { $1 }) NL { $2 }
 
