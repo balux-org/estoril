@@ -1,7 +1,0 @@
-(tests
- (names test_lexer)
- (package estoril)
- (modules test_lexer aux)
- (deps
-  (glob_files *.estrl))
- (libraries ounit2 estoril))
